@@ -1,8 +1,8 @@
-import { nanoid } from "nanoid";
+import { nanoid } from 'nanoid';
 
-import { useSelector, useDispatch } from "react-redux";
-import { addContact } from "redux/contactsSlice";
-import { getContacts } from "redux/selectors";
+import { useSelector, useDispatch } from 'react-redux';
+import { addContact } from 'redux/contactsOperations';
+import { selectContacts } from 'redux/selectors';
 
 import {
   AddForm,
@@ -10,20 +10,21 @@ import {
   InputName,
   InputNumber,
   AddBtn,
-} from "./ContactForm.styled";
+} from './ContactForm.styled';
 
 export function ContactForm() {
   const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
-  const handleSubmit = (event) => {
+  const contacts = useSelector(selectContacts);
+
+  const handleSubmit = event => {
     event.preventDefault();
     const form = event.target;
     const { name, number } = form.elements;
     contacts.find(
-      (contact) => contact.name.toLowerCase() === name.value.toLowerCase()
+      contact => contact.name.toLowerCase() === name.value.toLowerCase()
     )
       ? alert(`${name.value} is already in contacts`)
-      : dispatch(addContact(name.value, number.value));
+      : dispatch(addContact({ name: name.value, phone: number.value }));
 
     form.reset();
   };
@@ -33,7 +34,6 @@ export function ContactForm() {
       <AddLabel>
         Name
         <InputName
-          id={nanoid()}
           type="text"
           name="name"
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -44,7 +44,6 @@ export function ContactForm() {
       <AddLabel>
         Number
         <InputNumber
-          id={nanoid()}
           type="tel"
           name="number"
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
