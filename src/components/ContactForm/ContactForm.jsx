@@ -1,5 +1,3 @@
-import { nanoid } from 'nanoid';
-
 import { useSelector, useDispatch } from 'react-redux';
 import { addContact } from 'redux/contactsOperations';
 import { selectContacts } from 'redux/selectors';
